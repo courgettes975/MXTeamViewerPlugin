@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/MXTeamViewerPlugin.csproj" />
+  <Project Path="agent/MXTeamViewerAgent.csproj" />
+</Solution>

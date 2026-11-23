@@ -1,0 +1,58 @@
+{
+  // Copiez dans %LOCALAPPDATA%\MXTeamViewerPlugin\config.json (créé automatiquement au 1er chargement).
+  // Rechargé à chaud. AUCUN mot de passe ni jeton ici : les ID TeamViewer ne sont pas des secrets.
+  "teamviewerPath": "AUTO",
+  "recordingsPath": "AUTO",
+  "capturesPath": "%USERPROFILE%\\Documents\\TeamViewer Captures",
+  "logLevel": "Info",
+  "connectMethod": "cli",
+  "dialMode": "zoom",
+  "disconnectProtection": true,
+  "disconnectConfirmMs": 2000,
+  "microphone": { "mode": "teamviewer" },
+  "audioProcesses": [ "TeamViewer" ],
+  "volumeStep": 0.05,
+  "scrollLinesPerDetent": 1,
+  "quickConnect": { "name": "Connexion rapide", "teamviewerId": "", "alias": "", "icon": "star" },
+  "favorites": [
+    { "name": "PC Bureau",   "teamviewerId": "", "alias": "", "icon": "desktop" },
+    { "name": "PC Portable", "teamviewerId": "", "alias": "", "icon": "laptop" },
+    { "name": "Serveur",     "teamviewerId": "", "alias": "", "icon": "server" },
+    { "name": "Client 1",    "teamviewerId": "", "alias": "", "icon": "client" },
+    { "name": "Client 2",    "teamviewerId": "", "alias": "", "icon": "client" }
+  ],
+  "windows": {
+    "mainWindowClasses": [ "MainWindowOne" ],
+    "sessionWindowClasses": [ "sciter-frame" ],
+    "sessionTitleSuffix": " - TeamViewer",
+    "meetingWindowClasses": [ "BlizzMeetingCommandBar", "ParticipantsTabContainer" ]
+  },
+  "uia": {
+    "searchField": { "automationId": "search-input-field", "names": [ "Rechercher et se connecter", "Search and connect" ] },
+    "meeting": { "automationId": "meeting", "names": [ "Accéder à Réunion", "Go to Meeting", "Réunion", "Meeting" ] }
+  },
+  "keys": {
+    "searchAndConnect": "Ctrl+K",
+    "fullscreen": "",
+    "fitToWindow": "",
+    "zoom100": "",
+    "zoomIn": "",
+    "zoomOut": "",
+    "recordStart": "",
+    "recordStop": ""
+  },
+  "scripts": {
+    "recordStart": "",
+    "recordStop": "",
+    "fullscreen": "",
+    "zoomIn": "",
+    "zoomOut": "",
+    "zoom100": ""
+  },
+  "autoHotkeyPath": "",
+  "apiEnabled": false,
+  "profiles": {
+    "idle":    [ "tv.open", "tv.quick", "fav.1", "fav.2", "tv.recordings", "tv.newsession", "fav.3", "tv.meeting", "tv.diagnostics" ],
+    "session": [ "tv.mic", "tv.audio", "tv.capture", "tv.record", "tv.fullscreen", "zoom.in", "tv.disconnect", "zoom.out", "tv.open" ]
+  }
+}

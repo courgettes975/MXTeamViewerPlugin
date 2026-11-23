@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <RootNamespace>Loupedeck.MXTeamViewerPlugin</RootNamespace>
+    <AssemblyName>MXTeamViewerPlugin</AssemblyName>
+    <Version>1.0.1</Version>
+    <NoWarn>$(NoWarn);SA0001;CA1416</NoWarn>
+
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+    <PluginDir>$(LocalAppData)\Logi\LogiPluginService\Plugins\</PluginDir>
+    <BaseOutputPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\bin\'))</BaseOutputPath>
+    <OutputPath>$(BaseOutputPath)$(Configuration)\bin\</OutputPath>
+    <PluginShortName>MXTeamViewer</PluginShortName>
+
+    <!-- Same rule as the other plugins of this workspace: compile against the PluginApi.dll of the
+         INSTALLED Logi Plugin Service (it refuses plugins built against a newer API). -->
+    <PluginApiDir Condition="'$(PluginApiDir)' == ''">C:\Program Files\Logi\LogiPluginService\</PluginApiDir>
+    <UseInstalledPluginApi Condition="Exists('$(PluginApiDir)PluginApi.dll')">true</UseInstalledPluginApi>
+    <!-- Set to false to skip the agent publish (faster inner loop). -->
+    <BuildAgent Condition="'$(BuildAgent)' == ''">true</BuildAgent>
+    <!-- Set to false on CI / when packaging (no .link, no reload). -->
+    <LinkPlugin Condition="'$(LinkPlugin)' == ''">true</LinkPlugin>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(UseInstalledPluginApi)' == 'true'">
+    <Reference Include="PluginApi">
+      <HintPath>$(PluginApiDir)PluginApi.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseInstalledPluginApi)' != 'true'">
+    <PackageReference Include="LogiPluginApi" Version="6.*" ExcludeAssets="runtime;native" />
+  </ItemGroup>
+
+  <!-- Protocol DTOs shared with the agent (compiled into both assemblies). -->
+  <ItemGroup>
+    <Compile Include="..\shared\**\*.cs" Link="Shared\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <Target Name="CopyPackage" AfterTargets="PostBuildEvent">
+    <ItemGroup>
+      <PackageFiles Include="package\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PackageFiles)" DestinationFolder="$(OutputPath)..\%(RecursiveDir)" />
+  </Target>
+
+  <!-- Publishes the out-of-process automation agent next to the plugin DLL (bin\agent\). -->
+  <Target Name="PublishAgent" AfterTargets="CopyPackage" Condition="'$(BuildAgent)' == 'true'">
+    <Message Text="Publishing MXTeamViewerAgent..." Importance="High" />
+    <Exec Command="dotnet publish &quot;$(MSBuildThisFileDirectory)..\agent\MXTeamViewerAgent.csproj&quot; -c $(Configuration) -o &quot;$(OutputPath)agent&quot; --nologo -v q" />
+  </Target>
+
+  <Target Name="PostBuild" AfterTargets="PublishAgent" Condition="'$(LinkPlugin)' == 'true'">
+    <Exec Command="echo $(BaseOutputPath)$(Configuration)\ &gt; &quot;$(PluginDir)$(ProjectName).link&quot;" />
+    <Message Text="Plugin link: $(PluginDir)$(ProjectName).link" Importance="High" />
+    <Exec Command="start loupedeck:plugin/$(PluginShortName)/reload" ContinueOnError="true" />
+  </Target>
+
+  <Target Name="PluginClean" AfterTargets="CoreClean">
+    <Delete Files="$(PluginDir)$(ProjectName).link" />
+    <RemoveDir Directories="$(OutputPath)..\" />
+  </Target>
+
+</Project>

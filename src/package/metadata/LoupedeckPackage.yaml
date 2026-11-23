@@ -1,0 +1,28 @@
+# ==================================================================================================
+# MX TeamViewer for MX Creative Console - package manifest (Logi Actions SDK, package type plugin4)
+# ==================================================================================================
+type: plugin4
+name: MXTeamViewer
+displayName: MX TeamViewer
+description: Pilote TeamViewer depuis le MX Creative Keypad / Dialpad - lancement, connexions favorites, micro, son distant, captures, enregistrements, deconnexion protegee. Aucun mot de passe n'est stocke.
+pluginFileName: MXTeamViewerPlugin.dll
+version: 1.0.1
+author: Richard Lavallee
+copyright: Copyright © 2026 Richard Lavallee. TeamViewer is a trademark of TeamViewer Germany GmbH; this plugin is not affiliated with TeamViewer.
+
+pluginFolderWin: bin
+
+supportedDevices:
+    # MX Creative Console: MX Creative Keypad (9 LCD keys) + MX Creative Dialpad (dial/roller).
+    - LogitechCreativeFamily
+    - LoupedeckCtFamily
+
+pluginCapabilities:
+    # Actions must work while TeamViewer is NOT in the foreground (e.g. "launch TeamViewer").
+    - HasNoApplication
+
+# 6.4 = first Logi Plugin Service on .NET 10 (this DLL targets net10.0).
+minimumLoupedeckVersion: 6.4
+
+license: MIT
+licenseUrl: https://opensource.org/licenses/MIT
