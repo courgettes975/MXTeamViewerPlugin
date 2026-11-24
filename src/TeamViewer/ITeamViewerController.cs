@@ -12,6 +12,7 @@ namespace Loupedeck.MXTeamViewerPlugin
         ActionResult Launch();
         ActionResult BringToFront();
         ActionResult OpenNewSession();
+        ActionResult FocusConnectField();
         ActionResult Connect(string deviceId);
         ActionResult CreateMeeting();
         ActionResult Disconnect();

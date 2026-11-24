@@ -46,6 +46,10 @@ namespace Loupedeck.MXTeamViewerPlugin
 
         public ActionResult FocusSearchField(IntPtr mainWindow) => this.Focus(mainWindow, this._config().Uia.SearchField);
 
+        public ActionResult ClickNewSession(IntPtr mainWindow) => this.Invoke(mainWindow, this._config().Uia.NewSessionButton);
+
+        public ActionResult OpenSessionsTab(IntPtr mainWindow) => this.Invoke(mainWindow, this._config().Uia.SessionsTab);
+
         public bool MeetingAvailable(IntPtr mainWindow) => this.Exists(mainWindow, this._config().Uia.Meeting);
 
         public ActionResult OpenMeeting(IntPtr mainWindow) => this.Invoke(mainWindow, this._config().Uia.Meeting);

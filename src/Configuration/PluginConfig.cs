@@ -102,6 +102,20 @@ namespace Loupedeck.MXTeamViewerPlugin
             Names = new() { "Rechercher et se connecter", "Search and connect" },
         };
 
+        // Violet "Nouvelle session" button of the Sessions page (creates a session waiting for a participant).
+        public ElementSelector NewSessionButton { get; set; } = new()
+        {
+            AutomationId = "",
+            Names = new() { "Nouvelle session", "New session" },
+        };
+
+        // "Sessions" tab of the main window (the button above only exists on that tab).
+        public ElementSelector SessionsTab { get; set; } = new()
+        {
+            AutomationId = "Pivot14900-Tab1",
+            Names = new() { "Sessions" },
+        };
+
         public ElementSelector Meeting { get; set; } = new()
         {
             AutomationId = "meeting",

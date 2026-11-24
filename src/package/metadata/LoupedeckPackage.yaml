@@ -6,7 +6,7 @@ name: MXTeamViewer
 displayName: MX TeamViewer
 description: Pilote TeamViewer depuis le MX Creative Keypad / Dialpad - lancement, connexions favorites, micro, son distant, captures, enregistrements, deconnexion protegee. Aucun mot de passe n'est stocke.
 pluginFileName: MXTeamViewerPlugin.dll
-version: 1.0.1
+version: 1.0.2
 author: Richard Lavallee
 copyright: Copyright © 2026 Richard Lavallee. TeamViewer is a trademark of TeamViewer Germany GmbH; this plugin is not affiliated with TeamViewer.
 

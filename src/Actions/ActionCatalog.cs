@@ -60,14 +60,14 @@ namespace Loupedeck.MXTeamViewerPlugin
             };
             yield return new KeyAction
             {
-                Id = "tv.newsession", DisplayName = "Nouvelle session (champ ID)", Group = GroupMain,
+                Id = "tv.newsession", DisplayName = "Nouvelle session", Group = GroupMain,
                 Press = c => c.Tv.OpenNewSession(),
                 View = c => V(Glyph.NewSession, "Nouvelle"),
             };
             yield return new KeyAction
             {
                 Id = "tv.quick", DisplayName = "Connexion rapide (ID favori)", Group = GroupMain,
-                Press = c => string.IsNullOrEmpty(c.Config.QuickConnect.TeamviewerId) ? c.Tv.OpenNewSession() : c.Tv.Connect(c.Config.QuickConnect.TeamviewerId),
+                Press = c => string.IsNullOrEmpty(c.Config.QuickConnect.TeamviewerId) ? c.Tv.FocusConnectField() : c.Tv.Connect(c.Config.QuickConnect.TeamviewerId),
                 View = c => FavoriteView(c, c.Config.QuickConnect, Glyph.QuickConnect, "Rapide"),
             };
             yield return new KeyAction

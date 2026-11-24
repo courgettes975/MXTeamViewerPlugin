@@ -211,6 +211,8 @@ namespace Loupedeck.MXTeamViewerPlugin
             return IntPtr.Zero;
         }
 
+        // "Nouvelle session": clicks the real "Nouvelle session" button of the Sessions page, which creates a
+        // session. The button only exists on the Sessions tab, so that tab is selected first when needed.
         public ActionResult OpenNewSession()
         {
             if (!this._state.Running || this._state.MainWindow == IntPtr.Zero)
@@ -223,12 +225,43 @@ namespace Loupedeck.MXTeamViewerPlugin
                 return this.Done(ActionResult.Fail("fenêtre principale TeamViewer introuvable", "win32"), "NewSession");
             }
             Win32.Activate(main);
+
+            var r = this._uia.ClickNewSession(main);
+            if (!r.Success)
+            {
+                // Probably on another tab (ID TeamViewer): open Sessions, give the page time to render, retry.
+                if (this._uia.OpenSessionsTab(main).Success)
+                {
+                    for (var i = 0; i < 6 && !r.Success; i++)
+                    {
+                        Thread.Sleep(400);
+                        r = this._uia.ClickNewSession(main);
+                    }
+                }
+            }
+            return this.Done(r, "NewSession");
+        }
+
+        // Puts the cursor in "Rechercher et se connecter" (type an ID, then Enter): what "Nouvelle session"
+        // used to do. Still used by the quick-connect key when no favourite ID is configured.
+        public ActionResult FocusConnectField()
+        {
+            if (!this._state.Running || this._state.MainWindow == IntPtr.Zero)
+            {
+                this._cli.Launch();
+            }
+            var main = this.WaitForMainWindow(10000);
+            if (main == IntPtr.Zero)
+            {
+                return this.Done(ActionResult.Fail("fenêtre principale TeamViewer introuvable", "win32"), "FocusConnectField");
+            }
+            Win32.Activate(main);
             var r = this._uia.FocusSearchField(main);
             if (!r.Success)
             {
                 r = this._window.SendKeys(main, this.C.Keys.SearchAndConnect, "shortcut");
             }
-            return this.Done(r, "NewSession");
+            return this.Done(r, "FocusConnectField");
         }
 
         public ActionResult Connect(string deviceId) => this.Done(this._cli.Connect(deviceId), "Connect");
